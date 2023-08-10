@@ -22,10 +22,19 @@ class NotificationMethod {
     await flutterLocalNotificationPlugin.initialize(settings);
   }
 
-  static setNotification(int noteIndex, NotificationType type) async {
+  static setNotification(NoteModel note, NotificationType type) async {
+    // final note = notes[selectedNoteIndex];
+    final newNote = NoteModel(
+        id: note.id,
+        title: note.title,
+        content: note.content,
+        dateCreated: note.dateCreated,
+        notificationType: type,
+        notificationDate: selectedDate);
+    await NotificationMethod.cancelNotification(note.id);
     final time = tz.TZDateTime.from(selectedDate, tz.local);
     await flutterLocalNotificationPlugin.zonedSchedule(
-        noteIndex,
+        note.id,
         'Notification',
         "This is reminder for you",
         tz.TZDateTime(tz.local, time.year, time.month, time.day, time.hour),
@@ -39,8 +48,8 @@ class NotificationMethod {
         androidScheduleMode: AndroidScheduleMode.exact);
   }
 
-  static DateTimeComponents component = DateTimeComponents.time;
   static DateTimeComponents dateTimeComponent(NotificationType type) {
+    DateTimeComponents component = DateTimeComponents.time;
     if (type != NotificationType.off) {
       switch (type) {
         case NotificationType.onceoff:
@@ -62,7 +71,7 @@ class NotificationMethod {
     return component;
   }
 
-  Future<void> cancelNotification(int noteId) async {
+  static Future<void> cancelNotification(int noteId) async {
     await flutterLocalNotificationPlugin.cancel(noteId);
   }
 
