@@ -22,7 +22,7 @@ class NotificationMethod {
     await flutterLocalNotificationPlugin.initialize(settings);
   }
 
-  static setNotification(int noteIndex) async {
+  static setNotification(int noteIndex, NotificationType type) async {
     final time = tz.TZDateTime.from(selectedDate, tz.local);
     await flutterLocalNotificationPlugin.zonedSchedule(
         noteIndex,
@@ -33,14 +33,14 @@ class NotificationMethod {
             android: AndroidNotificationDetails('test notifi', "todo ",
                 importance: Importance.high, priority: Priority.max)),
         payload: "info",
-        matchDateTimeComponents: component,
+        matchDateTimeComponents: dateTimeComponent(type),
         uiLocalNotificationDateInterpretation:
             UILocalNotificationDateInterpretation.absoluteTime,
         androidScheduleMode: AndroidScheduleMode.exact);
   }
 
   static DateTimeComponents component = DateTimeComponents.time;
-  DateTimeComponents dateTimeComponent(NotificationType type) {
+  static DateTimeComponents dateTimeComponent(NotificationType type) {
     if (type != NotificationType.off) {
       switch (type) {
         case NotificationType.onceoff:
