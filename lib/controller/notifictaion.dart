@@ -22,8 +22,11 @@ class NotificationMethod {
     await flutterLocalNotificationPlugin.initialize(settings);
   }
 
-  static setNotification(NoteModel note, NotificationType type) async {
+  static setNotification(
+      BuildContext context, NoteModel note, NotificationType type) async {
     // final note = notes[selectedNoteIndex];
+    NotificationMethod.setNotificationOption(
+        context: context, type: type, note: note);
     final newNote = NoteModel(
         id: note.id,
         title: note.title,
