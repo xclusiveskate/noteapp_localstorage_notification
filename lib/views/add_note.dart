@@ -101,8 +101,8 @@ class _AddNoteState extends State<AddNote> {
                     //     context: context,
                     //     type: selectedType,
                     //     note: widget.note!);
-                    NotificationMethod.setNotification(
-                        context, widget.note!, selectedType);
+                    // NotificationMethod.setNotification(
+                    //     context, widget.note!, selectedType);
                   },
                   onCanceled: () {
                     print("no item selected");
