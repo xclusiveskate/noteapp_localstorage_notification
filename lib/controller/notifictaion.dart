@@ -22,7 +22,7 @@ class NotificationMethod {
     await flutterLocalNotificationPlugin.initialize(settings);
   }
 
-  static setNotification(
+  static Future<void> setNotification(
       BuildContext context, NoteModel note, NotificationType type) async {
     NotificationMethod.setNotificationOption(
       context: context,
@@ -46,34 +46,44 @@ class NotificationMethod {
             android: AndroidNotificationDetails('test notifi', "todo ",
                 importance: Importance.high, priority: Priority.max)),
         payload: "info",
-        matchDateTimeComponents: dateTimeComponent(type),
+        matchDateTimeComponents: dateTimeComponents(type, note.id),
         uiLocalNotificationDateInterpretation:
             UILocalNotificationDateInterpretation.absoluteTime,
         androidScheduleMode: AndroidScheduleMode.exact);
   }
 
-  static DateTimeComponents dateTimeComponent(NotificationType type) {
-    DateTimeComponents component = DateTimeComponents.time;
-    if (type != NotificationType.off) {
-      switch (type) {
-        case NotificationType.onceoff:
-          component = DateTimeComponents.time;
-          break;
-        case NotificationType.daily:
-          component = DateTimeComponents.dateAndTime;
-          break;
-        case NotificationType.weekly:
-          component = DateTimeComponents.dayOfWeekAndTime;
-          break;
-        case NotificationType.weekly:
-          component = DateTimeComponents.dayOfMonthAndTime;
-          break;
-        default:
-          break;
-      }
-    }
-    return component;
+  static dateTimeComponents(
+      NotificationType notificationType, int noteId) async {
+    return switch (notificationType) {
+      NotificationType.onceoff => DateTimeComponents.time,
+      NotificationType.daily => DateTimeComponents.dateAndTime,
+      NotificationType.weekly => DateTimeComponents.dayOfWeekAndTime,
+      NotificationType.monthly => DateTimeComponents.dayOfMonthAndTime,
+      _ => await cancelNotification(noteId)
+    };
   }
+  // static DateTimeComponents dateTimeComponent(NotificationType type) {
+  //   DateTimeComponents component = DateTimeComponents.time;
+  //   if (type != NotificationType.off) {
+  //     switch (type) {
+  //       case NotificationType.onceoff:
+  //         component = DateTimeComponents.time;
+  //         break;
+  //       case NotificationType.daily:
+  //         component = DateTimeComponents.dateAndTime;
+  //         break;
+  //       case NotificationType.weekly:
+  //         component = DateTimeComponents.dayOfWeekAndTime;
+  //         break;
+  //       case NotificationType.weekly:
+  //         component = DateTimeComponents.dayOfMonthAndTime;
+  //         break;
+  //       default:
+  //         break;
+  //     }
+  //   }
+  //   return component;
+  // }
 
   static setNotificationOption({
     required BuildContext context,

@@ -1,6 +1,7 @@
 // ignore_for_file: use_build_context_synchronously, must_be_immutable
 
 import 'package:flutter/material.dart';
+import 'package:noteapp_localstorage_notification/controller/notifictaion.dart';
 
 import '../constatnts/constant.dart';
 import '../controller/storage_method.dart';
@@ -92,20 +93,14 @@ class _AddNoteState extends State<AddNote> {
                   tooltip: "Add notification",
                   position: PopupMenuPosition.over,
                   initialValue: selectedType,
-                  onSelected: (value) {
+                  onSelected: (value) async {
                     setState(() {
                       selectedType = value;
                     });
-                    // NotificationMethod.setNotificationOption(
-                    //     context: context,
-                    //     type: selectedType,
-                    //     note: widget.note!);
-                    // NotificationMethod.setNotification(
-                    //     context, widget.note!, selectedType);
+                    await NotificationMethod.setNotification(
+                        context, widget.note!, selectedType);
                   },
-                  onCanceled: () {
-                    print("no item selected");
-                  },
+                  onCanceled: () {},
                   icon: const Icon(Icons.notification_add),
                   itemBuilder: (context) {
                     return NotificationType.values

@@ -7,11 +7,6 @@ import '../model/note_model.dart';
 String noteKey = 'note';
 
 class NoteStorage {
-  // static SharedPreferences? prefs;
-  // static Future init() async {
-  // final   prefs = await SharedPreferences.getInstance();
-  // }
-
   static Future<bool> saveNotes(List<NoteModel> notes) async {
     final prefs = await SharedPreferences.getInstance();
 
