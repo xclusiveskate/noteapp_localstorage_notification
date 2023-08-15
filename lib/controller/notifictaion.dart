@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:noteapp_localstorage_notification/constatnts/constant.dart';
 import 'package:noteapp_localstorage_notification/model/note_model.dart';
 import 'package:timezone/timezone.dart' as tz;
 
@@ -35,6 +36,13 @@ class NotificationMethod {
         dateCreated: note.dateCreated,
         notificationType: type,
         notificationDate: selectedDate);
+
+    var index = notes.indexWhere((element) => element.id == note.id);
+    notes[index] = newNote;
+    print(newNote);
+    print(notes[index]);
+    print(notes);
+
     await NotificationMethod.cancelNotification(note.id);
     final time = tz.TZDateTime.from(selectedDate, tz.local);
     await flutterLocalNotificationPlugin.zonedSchedule(
