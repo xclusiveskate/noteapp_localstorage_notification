@@ -1,8 +1,11 @@
 // ignore_for_file: unreachable_switch_case, use_build_context_synchronously
 
+import 'dart:html';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:noteapp_localstorage_notification/constatnts/constant.dart';
+import 'package:noteapp_localstorage_notification/controller/storage_method.dart';
 import 'package:noteapp_localstorage_notification/model/note_model.dart';
 import 'package:timezone/timezone.dart' as tz;
 
@@ -39,6 +42,7 @@ class NotificationMethod {
 
     var index = notes.indexWhere((element) => element.id == note.id);
     notes[index] = newNote;
+    NoteStorage.saveNotes(notes);
     print(newNote);
     print(notes[index]);
     print(notes);

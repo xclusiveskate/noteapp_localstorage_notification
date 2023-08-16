@@ -4,7 +4,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../constatnts/constant.dart';
 import '../controller/save_boolean.dart';
 import '../controller/storage_method.dart';
-import '../model/note_model.dart';
 import '../utils/float_action.dart';
 import 'add_note.dart';
 
@@ -37,9 +36,9 @@ class _NotePageState extends State<NotePage> {
 
   readNote() async {
     var theNotes = await NoteStorage.retrieveNotes();
-    setState(() {
-      notes = theNotes;
-    });
+    // setState(() {
+    //   notes = theNotes;
+    // });
     print(theNotes);
   }
 
@@ -99,7 +98,7 @@ class _NotePageState extends State<NotePage> {
                                           child: const Text("Cancel")),
                                       TextButton(
                                           onPressed: () {
-                                            bulkDelete();
+                                            NoteStorage.bulkDelete();
                                             Navigator.pop(context);
                                           },
                                           child: const Text("Delete"))
@@ -379,22 +378,6 @@ class _NotePageState extends State<NotePage> {
             ),
           );
         });
-  }
-
-  deleteNote(NoteModel note) async {
-    notes.removeWhere((element) => element == note);
-    NoteStorage.saveNotes(notes);
-    readNote();
-  }
-
-  bulkDelete() {
-    for (var element in selectedNotes) {
-      deleteNote(element);
-    }
-    setState(() {
-      startSelecting = false;
-      selectedNotes = [];
-    });
   }
 
   String formatDate(DateTime date) {
