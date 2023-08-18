@@ -1,6 +1,5 @@
 // ignore_for_file: unreachable_switch_case, use_build_context_synchronously
 
-import 'dart:html';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
