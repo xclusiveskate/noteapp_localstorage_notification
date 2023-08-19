@@ -42,7 +42,7 @@ class NoteStorage {
 
   static deleteNote(NoteModel note) async {
     notes.removeWhere((element) => element == note);
-    NoteStorage.saveNotes(notes);
+    saveNotes(notes);
     retrieveNotes();
   }
 
