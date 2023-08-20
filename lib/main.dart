@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_timezone/flutter_timezone.dart';
+import 'package:noteapp_localstorage_notification/constatnts/constant.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:timezone/data/latest_all.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
@@ -8,9 +10,10 @@ import 'views/home.dart';
 
 void main() async {
   runApp(const MyApp());
-  // final prefs = await SharedPreferences.getInstance();
-  // await prefs.clear();
+  final prefs = await SharedPreferences.getInstance();
+  await prefs.clear();
   _initializeTimeZone();
+  print(notes);
 }
 
 _initializeTimeZone() async {
