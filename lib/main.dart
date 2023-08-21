@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_timezone/flutter_timezone.dart';
 import 'package:noteapp_localstorage_notification/constatnts/constant.dart';
+import 'package:noteapp_localstorage_notification/controller/notifictaion.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:timezone/data/latest_all.dart' as tz;
@@ -33,7 +34,7 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
-    // NotificationMethod.initializeNotification();
+    NotificationMethod.initializeNotification();
   }
 
   @override

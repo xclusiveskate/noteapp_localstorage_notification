@@ -1,5 +1,7 @@
 // ignore_for_file: use_build_context_synchronously, must_be_immutable
 
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:noteapp_localstorage_notification/controller/notifictaion.dart';
 
@@ -30,10 +32,25 @@ class _AddNoteState extends State<AddNote> {
     print(status);
   }
 
+  int generateUniqueRandomId(Set<int> existingIds) {
+    final random = Random();
+    int newId;
+
+    do {
+      newId = random.nextInt(1000); // Adjust the range as needed
+    } while (existingIds.contains(newId));
+
+    existingIds.add(newId);
+    return newId;
+  }
+
+// Somewhere in your code, maintain a set to keep track of existing IDs
+  Set<int> existingIds = <int>{};
+
   addNote() async {
     if (titleController.text.isNotEmpty && contentController.text.isNotEmpty) {
       var note = NoteModel(
-          id: DateTime.now().millisecondsSinceEpoch,
+          id: generateUniqueRandomId(existingIds),
           title: titleController.text,
           content: contentController.text,
           dateCreated: DateTime.now(),

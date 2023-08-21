@@ -1,6 +1,5 @@
 // ignore_for_file: unreachable_switch_case, use_build_context_synchronously
 
-
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:noteapp_localstorage_notification/constatnts/constant.dart';
@@ -43,11 +42,12 @@ class NotificationMethod {
     notes[index] = newNote;
     NoteStorage.saveNotes(notes);
     print(newNote);
-    print(notes[index]);
-    print(notes);
+    print(notes[index].notificationType);
+    print(notes[index].notificationDate);
 
     await NotificationMethod.cancelNotification(note.id);
-    final time = tz.TZDateTime.from(selectedDate, tz.local);
+    var date = setNotificationOption(context: context, type: type);
+    final time = tz.TZDateTime.from(date, tz.local);
     await flutterLocalNotificationPlugin.zonedSchedule(
         note.id,
         'Notification',
@@ -63,14 +63,14 @@ class NotificationMethod {
         androidScheduleMode: AndroidScheduleMode.exact);
   }
 
-  static dateTimeComponents(
-      NotificationType notificationType, int noteId) async {
+  static DateTimeComponents? dateTimeComponents(
+      NotificationType notificationType, int noteId) {
     return switch (notificationType) {
       NotificationType.onceoff => DateTimeComponents.time,
       NotificationType.daily => DateTimeComponents.dateAndTime,
       NotificationType.weekly => DateTimeComponents.dayOfWeekAndTime,
       NotificationType.monthly => DateTimeComponents.dayOfMonthAndTime,
-      _ => await cancelNotification(noteId)
+      _ => cancelNotification(noteId)
     };
   }
   // static DateTimeComponents dateTimeComponent(NotificationType type) {
@@ -104,15 +104,14 @@ class NotificationMethod {
     final stuff = await notificationDayAndTime(context);
     print("${stuff.notificationDate}, ${stuff.notificationTime}");
     if (type != NotificationType.off) {
-      // final date = await pickDate(context);
       if (stuff.notificationDate != null) {
         theDate = stuff.notificationDate;
-        // final time = await pickTime(context);
         if (stuff.notificationTime != null) {
           theTime = stuff.notificationTime;
           selectedDate = DateTime(
               theDate!.year, theDate!.month, theDate!.day, theTime!.hour);
           print(selectedDate);
+          return selectedDate;
         }
       }
     }
@@ -130,7 +129,7 @@ class NotificationMethod {
     return (notificationDate: date, notificationTime: time);
   }
 
-  static Future<void> cancelNotification(int noteId) async {
+  static cancelNotification(int noteId) async {
     await flutterLocalNotificationPlugin.cancel(noteId);
   }
 

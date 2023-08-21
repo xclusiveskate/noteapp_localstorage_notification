@@ -44,7 +44,7 @@ class NoteModel {
         // hasNotification: map['hasNotification'] ?? false,
         notificationType: map['notificationType'] != null
             ? NotificationType.parse(map['notificationType'])
-            : NotificationType.off);
+            : NotificationType.parse(NotificationType.off as String));
   }
 
   String toJson() => json.encode(toMap());
