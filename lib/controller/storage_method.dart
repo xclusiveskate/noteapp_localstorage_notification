@@ -27,7 +27,7 @@ class NoteStorage {
     if (theNote != null) {
       final theJson = jsonDecode(theNote) as List<dynamic>;
       convertedNote = theJson.map((e) => NoteModel.fromMap(e)).toList();
-      notes = convertedNote;
+      notes = convertedNote; //tocheck
     }
 
     return convertedNote;
@@ -40,17 +40,17 @@ class NoteStorage {
   //   saveNotes(notes);
   // }
 
-  static deleteNote(NoteModel note) async {
-    notes.removeWhere((element) => element == note);
+  static deleteNote(int index) async {
+    notes.removeWhere((element) => element.id == notes[index].id);
     saveNotes(notes);
     retrieveNotes();
   }
 
   static bulkDelete() {
     for (var element in selectedNotes) {
-      deleteNote(element);
+      deleteNote(element.id);
     }
     startSelecting = false;
-    selectedNotes = [];
+    selectedNotes = []; //to redo with setstate in home
   }
 }

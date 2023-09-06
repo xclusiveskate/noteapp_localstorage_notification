@@ -26,10 +26,7 @@ class NotificationMethod {
 
   static Future<void> setNotification(
       BuildContext context, NoteModel note, NotificationType type) async {
-    NotificationMethod.setNotificationOption(
-      context: context,
-      type: type,
-    );
+    var date = setNotificationOption(context: context, type: type);
     final newNote = NoteModel(
         id: note.id,
         title: note.title,
@@ -46,8 +43,8 @@ class NotificationMethod {
     print(notes[index].notificationDate);
 
     await NotificationMethod.cancelNotification(note.id);
-    var date = setNotificationOption(context: context, type: type);
-    final time = tz.TZDateTime.from(date, tz.local);
+
+    final time = tz.TZDateTime.from(date as DateTime, tz.local);
     await flutterLocalNotificationPlugin.zonedSchedule(
         note.id,
         'Notification',
@@ -73,30 +70,8 @@ class NotificationMethod {
       _ => cancelNotification(noteId)
     };
   }
-  // static DateTimeComponents dateTimeComponent(NotificationType type) {
-  //   DateTimeComponents component = DateTimeComponents.time;
-  //   if (type != NotificationType.off) {
-  //     switch (type) {
-  //       case NotificationType.onceoff:
-  //         component = DateTimeComponents.time;
-  //         break;
-  //       case NotificationType.daily:
-  //         component = DateTimeComponents.dateAndTime;
-  //         break;
-  //       case NotificationType.weekly:
-  //         component = DateTimeComponents.dayOfWeekAndTime;
-  //         break;
-  //       case NotificationType.weekly:
-  //         component = DateTimeComponents.dayOfMonthAndTime;
-  //         break;
-  //       default:
-  //         break;
-  //     }
-  //   }
-  //   return component;
-  // }
 
-  static setNotificationOption({
+  static Future<DateTime> setNotificationOption({
     required BuildContext context,
     required NotificationType type,
     // required NoteModel note
@@ -111,10 +86,10 @@ class NotificationMethod {
           selectedDate = DateTime(
               theDate!.year, theDate!.month, theDate!.day, theTime!.hour);
           print(selectedDate);
-          return selectedDate;
         }
       }
     }
+    return selectedDate;
   }
 
   static Future<({DateTime? notificationDate, TimeOfDay? notificationTime})>
@@ -132,16 +107,4 @@ class NotificationMethod {
   static cancelNotification(int noteId) async {
     await flutterLocalNotificationPlugin.cancel(noteId);
   }
-
-//   static Future<DateTime?> pickDate(BuildContext context) async {
-//     return await showDatePicker(
-//         context: context,
-//         initialDate: DateTime.now(),
-//         firstDate: DateTime(2023),
-//         lastDate: DateTime(2050));
-//   }
-//   static Future<TimeOfDay?> pickTime(BuildContext context) async {
-//     return await showTimePicker(context: context, initialTime: TimeOfDay.now());
-//   }
-// }
 }

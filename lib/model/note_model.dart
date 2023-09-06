@@ -25,8 +25,7 @@ class NoteModel {
       'title': title,
       'content': content,
       'dateCreated': dateCreated.toIso8601String(),
-      'notificationDate':
-          notificationDate != null ? notificationDate!.toIso8601String() : null,
+      'notificationDate': notificationDate?.toIso8601String(),
       // 'hasNotification': hasNotification,
       'notificationType': notificationType.string
     };
@@ -38,13 +37,9 @@ class NoteModel {
         title: map['title'] as String,
         content: map['content'] as String,
         dateCreated: DateTime.parse(map['dateCreated']),
-        notificationDate: map['notificationDate'] != null
-            ? DateTime.parse(map['notificationDate'])
-            : null,
+        notificationDate: DateTime.parse(map['notificationDate']),
         // hasNotification: map['hasNotification'] ?? false,
-        notificationType: map['notificationType'] != null
-            ? NotificationType.parse(map['notificationType'])
-            : NotificationType.parse(NotificationType.off as String));
+        notificationType: NotificationType.parse(map['notificationType']));
   }
 
   String toJson() => json.encode(toMap());
